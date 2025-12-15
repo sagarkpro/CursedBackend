@@ -13,8 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.time.Instant;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/api/json-formatter")
@@ -34,7 +35,7 @@ public class JsonFormatterController {
     }
 
     @PostMapping(value = "/format-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Resource> formatFile(@RequestBody  MultipartFile jsonFile) {
+    public ResponseEntity<Resource> formatFile(@RequestBody MultipartFile jsonFile) {
         CursedLogger.info("Received req to format");
         if (jsonFile.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
@@ -44,19 +45,21 @@ public class JsonFormatterController {
             throw new IllegalArgumentException("Only JSON files are allowed");
         }
 
+        String attachment = "attachment; filename=\"" + jsonFile.getName() + "_" + Instant.now().toEpochMilli()
+                + ".json\"";
+
         try (InputStream is = jsonFile.getInputStream()) {
             JsonNode jsonNode = objectMapper.readTree(is);
-            Path filePath = FileUtils.writeStringToFile(jsonNode.toPrettyString());
-            Resource resource = new FileSystemResource(filePath);
+            byte[] opStream = objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsBytes(jsonNode);
+
             return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"output.txt\"")
-                .contentType(MediaType.TEXT_PLAIN)
-                .contentLength(resource.contentLength())
-                .body(resource);
-        }
-        catch(Exception e){
+                    .header(HttpHeaders.CONTENT_DISPOSITION, attachment)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new ByteArrayResource(opStream));
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().body(null);
         }
     }
-    
+
 }
