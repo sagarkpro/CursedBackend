@@ -1,15 +1,22 @@
 package com.cursedbackend.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.client.HttpServerErrorException.NotImplemented;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.cursedbackend.dtos.ResponseDto;
 import com.cursedbackend.logging.CursedLogger;
 import com.cursedbackend.utils.FileUtils;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -20,6 +27,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +43,10 @@ public class JsonFormatterController {
     }
 
     @PostMapping(value = "/format-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Resource> formatFile(@RequestBody MultipartFile jsonFile, String fileName) {
+    public ResponseEntity<StreamingResponseBody> formatFile(
+            @RequestPart("jsonFile") MultipartFile jsonFile) {
         CursedLogger.info("Received req to format");
+
         if (jsonFile.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
@@ -45,21 +55,32 @@ public class JsonFormatterController {
             throw new IllegalArgumentException("Only JSON files are allowed");
         }
 
-        String attachment = "attachment; filename=\"" + fileName + "_" + Instant.now().toEpochMilli()
-                + ".json\"";
+        String attachment = "attachment; filename=\"" +
+                jsonFile.getOriginalFilename().replace(".json", "") + "_"
+                + Instant.now().toEpochMilli() + ".json\"";
 
-        try (InputStream is = jsonFile.getInputStream()) {
-            JsonNode jsonNode = objectMapper.readTree(is);
-            byte[] opStream = objectMapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsBytes(jsonNode);
+        StreamingResponseBody stream = outputStream -> {
+            try (
+                    InputStream is = jsonFile.getInputStream();
+                    JsonGenerator generator = objectMapper
+                            .getFactory()
+                            .createGenerator(outputStream)) {
+                JsonNode jsonNode = objectMapper.readTree(is);
 
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, attachment)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(new ByteArrayResource(opStream));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(null);
-        }
+                ObjectWriter writer = objectMapper
+                        .writerWithDefaultPrettyPrinter();
+
+                writer.writeValue(generator, jsonNode);
+                generator.flush(); // important for browsers
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid JSON");
+            }
+        };
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, attachment)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(stream);
     }
 
 }
