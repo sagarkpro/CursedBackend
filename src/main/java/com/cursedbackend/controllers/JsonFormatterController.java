@@ -35,7 +35,7 @@ public class JsonFormatterController {
     }
 
     @PostMapping(value = "/format-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Resource> formatFile(@RequestBody MultipartFile jsonFile) {
+    public ResponseEntity<Resource> formatFile(@RequestBody MultipartFile jsonFile, String fileName) {
         CursedLogger.info("Received req to format");
         if (jsonFile.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
@@ -45,7 +45,7 @@ public class JsonFormatterController {
             throw new IllegalArgumentException("Only JSON files are allowed");
         }
 
-        String attachment = "attachment; filename=\"" + jsonFile.getName() + "_" + Instant.now().toEpochMilli()
+        String attachment = "attachment; filename=\"" + fileName + "_" + Instant.now().toEpochMilli()
                 + ".json\"";
 
         try (InputStream is = jsonFile.getInputStream()) {
