@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class WebhookLogDto {
     UUID id;
-    LocalDateTime cratedAt;
-    JsonNode LogItem;
+    LocalDateTime createdAt;
+    JsonNode logItem;
 }

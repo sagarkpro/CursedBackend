@@ -1,5 +1,6 @@
 package com.cursedbackend.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -8,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.cursedbackend.dtos.webhookTester.WebhookLogDto;
+import com.cursedbackend.entities.WebhookLogs;
+import com.cursedbackend.logging.CursedLogger;
 import com.cursedbackend.respositories.WebhookLogsRepository;
 
 @Service
@@ -23,8 +26,8 @@ public class WebhookLogServiceImpl implements WebhookLogService {
         var logs = webhookLogsRepository.findAll();
         return logs.stream().map(log -> WebhookLogDto.builder()
             .id(log.getId())
-            .cratedAt(log.getCreatedAt())
-            .LogItem(log.getLogItem())
+            .createdAt(log.getCreatedAt())
+            .logItem(log.getLogItem())
             .build())
         .collect(Collectors.toList());
     }
@@ -42,9 +45,23 @@ public class WebhookLogServiceImpl implements WebhookLogService {
         }
         webhookLogsRepository.deleteById(uuid);
         return WebhookLogDto.builder()
-            .LogItem(existingWebhook.get().getLogItem())
+            .logItem(existingWebhook.get().getLogItem())
             .id(existingWebhook.get().getId())
-            .cratedAt(existingWebhook.get().getCreatedAt())
+            .createdAt(existingWebhook.get().getCreatedAt())
+            .build();
+    }
+
+    @Override
+    public WebhookLogDto createWebhookLog(WebhookLogDto webhookLogDto) {
+        var res = webhookLogsRepository.save(WebhookLogs.builder()
+                .logItem(webhookLogDto.getLogItem())
+                .createdAt(LocalDateTime.now())
+                .build());
+
+        return WebhookLogDto.builder()
+            .logItem(res.getLogItem())
+            .createdAt(res.getCreatedAt())
+            .id(res.getId())
             .build();
     }
 
