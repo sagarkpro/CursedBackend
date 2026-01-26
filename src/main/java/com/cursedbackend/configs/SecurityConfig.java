@@ -18,6 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.cursedbackend.exceptions.handlers.CustomAccessDeniedHandler;
 import com.cursedbackend.exceptions.handlers.CustomAuthenticationEntryPoint;
+import com.cursedbackend.filters.ResponseTimeFilter;
 import com.cursedbackend.jwt.JwtFilter;
 
 @Configuration
@@ -26,6 +27,9 @@ import com.cursedbackend.jwt.JwtFilter;
 public class SecurityConfig {
     @Autowired
     JwtFilter jwtFilter;
+
+    @Autowired
+    ResponseTimeFilter responseTimeFilter;
 
     @Autowired
     CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -44,6 +48,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .addFilterBefore(responseTimeFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return request.build();
