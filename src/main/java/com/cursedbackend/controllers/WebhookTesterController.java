@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cursedbackend.dtos.PaginatedResponseDto;
 import com.cursedbackend.dtos.webhookTester.WebhookLogDto;
 import com.cursedbackend.services.WebhookLogService;
 
@@ -24,7 +25,7 @@ public class WebhookTesterController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WebhookLogDto>> listLogs(){
+    public ResponseEntity<PaginatedResponseDto<List<WebhookLogDto>>> listLogs(){
         var logs = webhookLogService.listWebhooks();
         return ResponseEntity.ok(logs);
     }

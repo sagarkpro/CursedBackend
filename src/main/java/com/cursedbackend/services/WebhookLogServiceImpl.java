@@ -6,11 +6,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.cursedbackend.dtos.PaginatedResponseDto;
+import com.cursedbackend.dtos.PaginationDto;
 import com.cursedbackend.dtos.webhookTester.WebhookLogDto;
 import com.cursedbackend.entities.WebhookLogs;
-import com.cursedbackend.logging.CursedLogger;
 import com.cursedbackend.respositories.WebhookLogsRepository;
 
 @Service
@@ -22,33 +26,46 @@ public class WebhookLogServiceImpl implements WebhookLogService {
     }
 
     @Override
-    public List<WebhookLogDto> listWebhooks() {
-        var logs = webhookLogsRepository.findAll();
-        return logs.stream().map(log -> WebhookLogDto.builder()
-            .id(log.getId())
-            .createdAt(log.getCreatedAt())
-            .logItem(log.getLogItem())
-            .build())
-        .collect(Collectors.toList());
+    public PaginatedResponseDto<List<WebhookLogDto>> listWebhooks() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        var logs = webhookLogsRepository.findAll(pageable);
+
+        return PaginatedResponseDto.<List<WebhookLogDto>>builder()
+                .pagination(PaginationDto
+                        .builder()
+                        .currentPage(logs.getNumber() + 1)
+                        .itemsPerPage(logs.getNumberOfElements())
+                        .totalItems(logs.getTotalElements())
+                        .totalPages(logs.getTotalPages())
+                        .hasNext(logs.hasNext())
+                        .hasPrev(logs.hasPrevious())
+                        .build())
+                .data(logs.stream().map(log -> WebhookLogDto.builder()
+                        .id(log.getId())
+                        .createdAt(log.getCreatedAt())
+                        .logItem(log.getLogItem())
+                        .build())
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
     public WebhookLogDto deleteWebhookLog(String id) {
-        if(StringUtils.isBlank(id)){
-           throw new IllegalArgumentException("Id is required to delete webhook"); 
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Id is required to delete webhook");
         }
         var uuid = UUID.fromString(id);
 
         var existingWebhook = webhookLogsRepository.findById(uuid);
-        if(existingWebhook.isEmpty()){
+        if (existingWebhook.isEmpty()) {
             throw new IllegalArgumentException("Webhook you are trying to delete doesn't exist.");
         }
         webhookLogsRepository.deleteById(uuid);
         return WebhookLogDto.builder()
-            .logItem(existingWebhook.get().getLogItem())
-            .id(existingWebhook.get().getId())
-            .createdAt(existingWebhook.get().getCreatedAt())
-            .build();
+                .logItem(existingWebhook.get().getLogItem())
+                .id(existingWebhook.get().getId())
+                .createdAt(existingWebhook.get().getCreatedAt())
+                .build();
     }
 
     @Override
@@ -59,10 +76,10 @@ public class WebhookLogServiceImpl implements WebhookLogService {
                 .build());
 
         return WebhookLogDto.builder()
-            .logItem(res.getLogItem())
-            .createdAt(res.getCreatedAt())
-            .id(res.getId())
-            .build();
+                .logItem(res.getLogItem())
+                .createdAt(res.getCreatedAt())
+                .id(res.getId())
+                .build();
     }
 
 }
