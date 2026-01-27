@@ -11,7 +11,7 @@ public class CursedBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CursedBackendApplication.class, args);
 
-		System.out.println("\n\n\n\n\n<---------------APPLICATION STARTED------------------>\n\n\n\n\n");
+		System.out.println("\n\n<---------------APPLICATION STARTED------------------>\n\n");
 		
 		// // this code opens the given url in default browser
 		// try{
