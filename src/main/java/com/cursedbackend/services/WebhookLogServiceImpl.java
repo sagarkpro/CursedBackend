@@ -27,13 +27,21 @@ public class WebhookLogServiceImpl implements WebhookLogService {
 
     @Override
     public PaginatedResponseDto<List<WebhookLogDto>> listWebhooks() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return listWebhooks(0, 10);
+    }
+
+    @Override
+    public PaginatedResponseDto<List<WebhookLogDto>> listWebhooks(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest
+                .of(pageNum, pageSize, Sort
+                        .by(Sort.Direction.DESC, "createdAt"));
+
         var logs = webhookLogsRepository.findAll(pageable);
 
         return PaginatedResponseDto.<List<WebhookLogDto>>builder()
                 .pagination(PaginationDto
                         .builder()
-                        .currentPage(logs.getNumber() + 1)
+                        .currentPage(logs.getNumber())
                         .itemsPerPage(logs.getNumberOfElements())
                         .totalItems(logs.getTotalElements())
                         .totalPages(logs.getTotalPages())
@@ -45,7 +53,7 @@ public class WebhookLogServiceImpl implements WebhookLogService {
                         .createdAt(log.getCreatedAt())
                         .logItem(log.getLogItem())
                         .build())
-                        .collect(Collectors.toList()))
+                        .toList())
                 .build();
     }
 
