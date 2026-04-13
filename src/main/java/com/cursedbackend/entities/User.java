@@ -38,9 +38,8 @@ public class User extends BaseEntity implements UserDetails{
     @Column(nullable = false, length = 100)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "cursed.user_role")
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "cursed.user_role")
     private Role role;
 
     @Column(nullable = false, length = 100)
