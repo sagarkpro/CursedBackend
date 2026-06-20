@@ -8,13 +8,19 @@ import org.springframework.stereotype.Component;
 
 import com.cursedbackend.dtos.ErrorDto;
 import com.cursedbackend.dtos.ResponseDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+    private final ObjectMapper objectMapper;
+
+    public CustomAccessDeniedHandler(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public void handle(
@@ -30,7 +36,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                 .error(new ErrorDto("You are not authorized to access this resource", null))
                 .build();
 
-        response.getWriter().write(new ObjectMapper().writeValueAsString(responseDto));
+        response.getWriter().write(objectMapper.writeValueAsString(responseDto));
     }
 
 }
