@@ -46,15 +46,13 @@ public class JsonFormatterController {
                 jsonFile.getOriginalFilename().replace(".json", "") + "_"
                 + Instant.now().toEpochMilli() + ".json\"";
 
+        ObjectWriter writer = objectMapper.writerWithDefaultPrettyPrinter();
+
         StreamingResponseBody stream = outputStream -> {
             try (
                     InputStream is = jsonFile.getInputStream();
-                    JsonGenerator generator = objectMapper
-                            .createGenerator(outputStream)) {
+                    JsonGenerator generator = writer.createGenerator(outputStream)) {
                 JsonNode jsonNode = objectMapper.readTree(is);
-
-                ObjectWriter writer = objectMapper
-                        .writerWithDefaultPrettyPrinter();
 
                 writer.writeValue(generator, jsonNode);
                 generator.flush(); // important for browsers
