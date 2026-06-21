@@ -31,9 +31,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
 
-        ResponseDto responseDto = ResponseDto.builder()
+        ResponseDto<?> responseDto = ResponseDto.builder()
                 .success(false)
-                .error(new ErrorDto("Authentication required", null))
+                .error(ErrorDto.builder().message("Authentication required").build())
                 .build();
 
         response.getWriter().write(objectMapper.writeValueAsString(responseDto));

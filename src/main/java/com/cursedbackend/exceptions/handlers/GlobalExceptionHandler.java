@@ -14,13 +14,13 @@ import com.cursedbackend.exceptions.InvalidTokenException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ResponseDto> handleInvalidTokenException(
+    public ResponseEntity<ResponseDto<?>> handleInvalidTokenException(
             InvalidTokenException ex,
             WebRequest request) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ResponseDto.builder()
                         .success(false)
-                        .error(new ErrorDto("Invalid token", null))
+                        .error(ErrorDto.builder().message("Invalid token").build())
                         .build());
     }
 

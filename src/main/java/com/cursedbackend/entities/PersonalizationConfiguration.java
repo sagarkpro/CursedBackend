@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
@@ -23,10 +24,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 
 @Entity
-@Table(name = "cursed_home_configurations", schema = "cursed")
-public class CursedHomeConfiguration extends BaseEntity {
+@Table(name = "personalization_configurations", schema = "cursed")
+public class PersonalizationConfiguration extends BaseEntity {
     @Column(name = "user_email", nullable = false, length = 100)
     String userEmail;
 

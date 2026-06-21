@@ -24,9 +24,10 @@ public class ContextFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            var auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            var auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null && auth.isAuthenticated()) {
-                Map<String, Object> claims = auth.getToken().getClaims();
+                var jwtAuthToken = (JwtAuthenticationToken) auth;
+                Map<String, Object> claims = jwtAuthToken.getToken().getClaims();
                 var ctx = new RequestContext(UserInfo.from(claims));
                 RequestContextHolder.set(ctx);
             }

@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
@@ -21,10 +22,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 
 @Entity
-@Table(name = "cursed_home_wallpapers", schema = "cursed")
-public class CursedHomeWallpapers extends BaseEntity {
+@Table(name = "personalization_wallpapers", schema = "cursed")
+public class PersonalizationWallpapers extends BaseEntity {
     @Column(name = "user_email", nullable = false, unique = true, length = 100)
     String userEmail;
 

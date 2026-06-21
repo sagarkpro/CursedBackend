@@ -31,9 +31,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json");
 
-        ResponseDto responseDto = ResponseDto.builder()
+        ResponseDto<?> responseDto = ResponseDto.builder()
                 .success(false)
-                .error(new ErrorDto("You are not authorized to access this resource", null))
+                .error(ErrorDto.builder().message("You are not authorized to access this resource").build())
                 .build();
 
         response.getWriter().write(objectMapper.writeValueAsString(responseDto));
