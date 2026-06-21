@@ -7,10 +7,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.cursedbackend.logging.CursedLogger;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
 
 import java.io.InputStream;
 import java.time.Instant;
@@ -50,7 +50,6 @@ public class JsonFormatterController {
             try (
                     InputStream is = jsonFile.getInputStream();
                     JsonGenerator generator = objectMapper
-                            .getFactory()
                             .createGenerator(outputStream)) {
                 JsonNode jsonNode = objectMapper.readTree(is);
 

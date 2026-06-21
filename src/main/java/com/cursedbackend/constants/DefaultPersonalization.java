@@ -1,0 +1,152 @@
+package com.cursedbackend.constants;
+
+import java.util.List;
+
+import com.cursedbackend.entities.PersonalizationConfiguration;
+import com.cursedbackend.entities.PersonalizationWallpapers;
+import com.cursedbackend.entities.enums.ShortcutType;
+
+public class DefaultPersonalization {
+    public static final List<PersonalizationConfiguration> defaultConfigs = List.of(
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("ChatGPT")
+                    .url("https://chatgpt.com/")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/chatgpt.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Claude")
+                    .url("https://claude.ai/")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/claude.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Hetzner Console")
+                    .url("https://console.hetzner.com/")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/hetzner.svg")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.REPOSITORY)
+                    .name("GitHub")
+                    .url("https://github.com")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/github-mark-white.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.REPOSITORY)
+                    .name("Gitlab")
+                    .url("https://gitlab.com/")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/gitlab-logo-500.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Discord")
+                    .url("https://discord.com/channels/@me")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/discord.svg")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Json Formatter")
+                    .url("https://jsonformatter.sudox1.com")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/json.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Youtube")
+                    .url("https://youtube.com")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/youtube.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Youtube Music")
+                    .url("https://music.youtube.com")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/youtube-music.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Prime Video")
+                    .url("https://www.primevideo.com/")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/primeVideo.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Jira")
+                    .url("https://zentrumhub.atlassian.net/jira/software/c/projects/NEX/boards/1")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/jira.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Amplify")
+                    .url("https://ap-south-1.console.aws.amazon.com/amplify/apps")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/Amplify.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("DynamoDB")
+                    .url("https://ap-south-1.console.aws.amazon.com/dynamodbv2/home?region=ap-south-1#dashboard")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/DynamoDB.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("S3 Bucket")
+                    .url("https://ap-south-1.console.aws.amazon.com/s3/home?region=ap-south-1#")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/SimpleStorageService.png")
+                    .build(),
+
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Leetcode 50")
+                    .url("/leetcode50.md")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/leetcode.png")
+                    .build(),
+
+            // Duplicate intentionally preserved
+            PersonalizationConfiguration.builder()
+                    .userEmail(Constants.DEFAULT_USER_EMAIL)
+                    .type(ShortcutType.WEB)
+                    .name("Leetcode 50")
+                    .url("/leetcode50.md")
+                    .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/leetcode.png")
+                    .build());
+
+    public static final PersonalizationWallpapers defaultWallpapers = PersonalizationWallpapers.builder()
+            .userEmail(Constants.DEFAULT_USER_EMAIL)
+            .wallpaperUrls(List.of(
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/captain-shinsui-kyoraku.png",
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/comet.jpg",
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/gojo-max-real.jpeg",
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/gotei-4k.jpg",
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/Itachi-uchiha.png",
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/makima1.png",
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/makima2.png",
+                    "https://cdn.sudox1.com/uploadnpray/users/personalization/wallpapers/midnight-reflections-moonlit-sea.jpg"))
+            .build();
+}

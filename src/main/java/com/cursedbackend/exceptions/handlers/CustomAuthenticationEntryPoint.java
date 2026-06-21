@@ -8,13 +8,19 @@ import org.springframework.stereotype.Component;
 
 import com.cursedbackend.dtos.ErrorDto;
 import com.cursedbackend.dtos.ResponseDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    private final ObjectMapper objectMapper;
+
+    public CustomAuthenticationEntryPoint(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public void commence(
@@ -25,12 +31,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
 
-        ResponseDto responseDto = ResponseDto.builder()
+        ResponseDto<?> responseDto = ResponseDto.builder()
                 .success(false)
-                .error(new ErrorDto("Authentication required", null))
+                .error(ErrorDto.builder().message("Authentication required").build())
                 .build();
 
-        response.getWriter().write(new ObjectMapper().writeValueAsString(responseDto));
+        response.getWriter().write(objectMapper.writeValueAsString(responseDto));
     }
 
 }
