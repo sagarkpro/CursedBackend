@@ -16,4 +16,6 @@ public interface PersonalizationConfigurationRepository extends JpaRepository<Pe
     boolean existsByIdAndUserEmail(UUID id, String email);
 
     boolean existsByUserEmail(String email);
+
+    void deleteByUserEmail(String email);
 }

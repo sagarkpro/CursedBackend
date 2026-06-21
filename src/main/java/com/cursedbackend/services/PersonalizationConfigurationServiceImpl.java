@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.cursedbackend.constants.DefaultPersonalization;
 import com.cursedbackend.dtos.ResponseDto;
 import com.cursedbackend.dtos.personalization.PersonalizationConfigurationDto;
 import com.cursedbackend.entities.PersonalizationConfiguration;
@@ -40,6 +42,23 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
     public ResponseDto<Void> createShortcut(String email, PersonalizationConfigurationDto req) {
         var config = toPersonalizationConfiguration(req, email);
         configRepository.save(config);
+        return ResponseDto.successDto();
+    }
+
+    @Override
+    @Transactional
+    public ResponseDto<Void> initializeDefaults(String email) {
+        configRepository.deleteByUserEmail(email);
+        var seeds = DefaultPersonalization.defaultConfigs.stream()
+                .map(c -> PersonalizationConfiguration.builder()
+                        .userEmail(email)
+                        .type(c.getType())
+                        .name(c.getName())
+                        .url(c.getUrl())
+                        .image(c.getImage())
+                        .build())
+                .toList();
+        configRepository.saveAll(seeds);
         return ResponseDto.successDto();
     }
 

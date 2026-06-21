@@ -14,4 +14,6 @@ public interface PersonalizationConfigurationService {
     ResponseDto<Void> editShortcut(UUID id, String email, PersonalizationConfigurationDto req);
 
     ResponseDto<Void> deleteShortcut(UUID id, String email);
+
+    ResponseDto<Void> initializeDefaults(String email);
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cursedbackend.constants.Constants;
+import com.cursedbackend.constants.DefaultPersonalization;
 import com.cursedbackend.dtos.ResponseDto;
 import com.cursedbackend.dtos.personalization.PersonalizationConfigurationDto;
 import com.cursedbackend.services.MinIOService;
@@ -42,6 +43,14 @@ public class PersonalizationController {
         this.configService = configService;
         this.wallpaperService = wallpaperService;
         this.minIOService = minIOService;
+    }
+
+    @PostMapping("initialize-defaults")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ResponseDto<Void>> initializeDefaults() {
+        var email = CommonUtils.getCurrentUserEmail();
+        wallpaperService.updateWallpapers(email, DefaultPersonalization.defaultWallpapers.getWallpaperUrls());
+        return CommonUtils.handleResponse(configService.initializeDefaults(email));
     }
 
     @GetMapping("shortcut")
