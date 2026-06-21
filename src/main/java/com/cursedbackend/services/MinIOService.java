@@ -1,11 +1,15 @@
 package com.cursedbackend.services;
 
-import java.io.IOException;
-
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cursedbackend.dtos.ResponseDto;
+
 public interface MinIOService {
-    String upload(MultipartFile file, String folder) throws IOException;
+    ResponseDto<String> upload(MultipartFile file, String folder);
+
+    ResponseDto<String> uploadShortcut(MultipartFile file);
+
+    ResponseDto<String> uploadWallpaper(MultipartFile file);
 
     boolean delete(String filePath);
 }
