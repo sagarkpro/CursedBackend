@@ -34,7 +34,7 @@ public class DefaultPersonalization {
 
             PersonalizationConfiguration.builder()
                     .userEmail(Constants.DEFAULT_USER_EMAIL)
-                    .type(ShortcutType.REPOSITORY)
+                    .type(ShortcutType.WEB)
                     .name("GitHub")
                     .url("https://github.com")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/github-mark-white.png")
@@ -42,7 +42,7 @@ public class DefaultPersonalization {
 
             PersonalizationConfiguration.builder()
                     .userEmail(Constants.DEFAULT_USER_EMAIL)
-                    .type(ShortcutType.REPOSITORY)
+                    .type(ShortcutType.WEB)
                     .name("Gitlab")
                     .url("https://gitlab.com/")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/gitlab-logo-500.png")
