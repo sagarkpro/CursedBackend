@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,7 +28,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 
 @Entity
-@Table(name = "personalization_configurations", schema = "cursed")
+@Table(name = "personalization_configurations", schema = "cursed", uniqueConstraints = @UniqueConstraint(name = "uq_personalization_configurations_user_email_rank", columnNames = {
+        "user_email", "rank" }))
 public class PersonalizationConfiguration extends BaseEntity {
     @Column(name = "user_email", nullable = false, length = 100)
     String userEmail;
@@ -45,4 +47,7 @@ public class PersonalizationConfiguration extends BaseEntity {
 
     @Column(length = 2048)
     String image;
+
+    @Column(length = 255, nullable = false)
+    String rank;
 }
