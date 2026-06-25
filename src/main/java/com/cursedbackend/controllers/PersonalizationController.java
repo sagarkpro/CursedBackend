@@ -22,6 +22,7 @@ import com.cursedbackend.constants.Constants;
 import com.cursedbackend.constants.DefaultPersonalization;
 import com.cursedbackend.dtos.ResponseDto;
 import com.cursedbackend.dtos.personalization.PersonalizationConfigurationDto;
+import com.cursedbackend.dtos.personalization.ReorderShortcutDto;
 import com.cursedbackend.services.MinIOService;
 import com.cursedbackend.services.PersonalizationConfigurationService;
 import com.cursedbackend.services.PersonalizationWallpapersService;
@@ -69,6 +70,12 @@ public class PersonalizationController {
     public ResponseEntity<ResponseDto<Void>> createPersonalization(
             @RequestBody @Valid PersonalizationConfigurationDto req) {
         return CommonUtils.handleResponse(configService.createShortcut(CommonUtils.getCurrentUserEmail(), req));
+    }
+
+    @PostMapping("shortcut/reorder")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ResponseDto<Void>> reorder(@RequestBody @Valid ReorderShortcutDto req) {
+        return CommonUtils.handleResponse(configService.reorderShortcut(CommonUtils.getCurrentUserEmail(), req));
     }
 
     @PutMapping("{id}/shortcut")

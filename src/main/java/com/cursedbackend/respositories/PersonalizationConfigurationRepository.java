@@ -11,6 +11,10 @@ import com.cursedbackend.entities.PersonalizationConfiguration;
 public interface PersonalizationConfigurationRepository extends JpaRepository<PersonalizationConfiguration, UUID> {
     List<PersonalizationConfiguration> findByUserEmail(String email);
 
+    List<PersonalizationConfiguration> findByUserEmailOrderByRank(String email);
+
+    Optional<PersonalizationConfiguration> findFirstByUserEmailOrderByRank(String email);
+
     Optional<PersonalizationConfiguration> findByIdAndUserEmail(UUID id, String email);
 
     boolean existsByIdAndUserEmail(UUID id, String email);
