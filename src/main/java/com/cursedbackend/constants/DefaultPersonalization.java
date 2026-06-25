@@ -14,6 +14,7 @@ public class DefaultPersonalization {
                     .name("ChatGPT")
                     .url("https://chatgpt.com/")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/chatgpt.png")
+                    .rank("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -22,6 +23,7 @@ public class DefaultPersonalization {
                     .name("Claude")
                     .url("https://claude.ai/")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/claude.png")
+                    .rank("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -30,6 +32,7 @@ public class DefaultPersonalization {
                     .name("Hetzner Console")
                     .url("https://console.hetzner.com/")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/hetzner.svg")
+                    .rank("cccccccccccccccccccccccccccccccc")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -38,6 +41,7 @@ public class DefaultPersonalization {
                     .name("GitHub")
                     .url("https://github.com")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/github-mark-white.png")
+                    .rank("dddddddddddddddddddddddddddddddd")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -46,6 +50,7 @@ public class DefaultPersonalization {
                     .name("Gitlab")
                     .url("https://gitlab.com/")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/gitlab-logo-500.png")
+                    .rank("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -54,6 +59,7 @@ public class DefaultPersonalization {
                     .name("Discord")
                     .url("https://discord.com/channels/@me")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/discord.svg")
+                    .rank("ffffffffffffffffffffffffffffffff")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -62,6 +68,7 @@ public class DefaultPersonalization {
                     .name("Json Formatter")
                     .url("https://jsonformatter.sudox1.com")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/json.png")
+                    .rank("gggggggggggggggggggggggggggggggg")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -70,6 +77,7 @@ public class DefaultPersonalization {
                     .name("Youtube")
                     .url("https://youtube.com")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/youtube.png")
+                    .rank("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -78,6 +86,7 @@ public class DefaultPersonalization {
                     .name("Youtube Music")
                     .url("https://music.youtube.com")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/youtube-music.png")
+                    .rank("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -86,6 +95,7 @@ public class DefaultPersonalization {
                     .name("Prime Video")
                     .url("https://www.primevideo.com/")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/primeVideo.png")
+                    .rank("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -94,6 +104,7 @@ public class DefaultPersonalization {
                     .name("Jira")
                     .url("https://zentrumhub.atlassian.net/jira/software/c/projects/NEX/boards/1")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/jira.png")
+                    .rank("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -102,6 +113,7 @@ public class DefaultPersonalization {
                     .name("Amplify")
                     .url("https://ap-south-1.console.aws.amazon.com/amplify/apps")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/Amplify.png")
+                    .rank("llllllllllllllllllllllllllllllll")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -110,6 +122,7 @@ public class DefaultPersonalization {
                     .name("DynamoDB")
                     .url("https://ap-south-1.console.aws.amazon.com/dynamodbv2/home?region=ap-south-1#dashboard")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/DynamoDB.png")
+                    .rank("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -118,6 +131,7 @@ public class DefaultPersonalization {
                     .name("S3 Bucket")
                     .url("https://ap-south-1.console.aws.amazon.com/s3/home?region=ap-south-1#")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/SimpleStorageService.png")
+                    .rank("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
                     .build(),
 
             PersonalizationConfiguration.builder()
@@ -126,6 +140,7 @@ public class DefaultPersonalization {
                     .name("Leetcode 50")
                     .url("/leetcode50.md")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/leetcode.png")
+                    .rank("oooooooooooooooooooooooooooooooo")
                     .build(),
 
             // Duplicate intentionally preserved
@@ -135,6 +150,7 @@ public class DefaultPersonalization {
                     .name("Leetcode 50")
                     .url("/leetcode50.md")
                     .image("https://cdn.sudox1.com/uploadnpray/users/personalization/shortcuts/leetcode.png")
+                    .rank("pppppppppppppppppppppppppppppppp")
                     .build());
 
     public static final PersonalizationWallpapers defaultWallpapers = PersonalizationWallpapers.builder()

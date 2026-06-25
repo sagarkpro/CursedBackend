@@ -34,4 +34,6 @@ public class PersonalizationConfigurationDto {
     String url;
 
     String image;
+
+    String rank;
 }
