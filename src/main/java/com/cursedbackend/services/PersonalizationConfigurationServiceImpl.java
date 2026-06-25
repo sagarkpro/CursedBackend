@@ -64,6 +64,7 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
         var seeds = DefaultPersonalization.defaultConfigs.stream()
                 .map(c -> PersonalizationConfiguration.builder()
                         .userEmail(email)
+                        .rank(c.getRank())
                         .type(c.getType())
                         .name(c.getName())
                         .url(c.getUrl())
@@ -79,6 +80,7 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
         var existing = configRepository.findByIdAndUserEmail(id, email).orElse(null);
         if (existing != null) {
             var edited = toPersonalizationConfiguration(req, existing.getUserEmail(), existing.getId());
+            edited.setRank(existing.getRank());
             configRepository.save(edited);
             return ResponseDto.successDto();
         }
@@ -143,10 +145,10 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
             nextRank = new BigInteger(next.getRank(), 36);
         } else if (prev != null) {
             prevRank = new BigInteger(prev.getRank(), 36);
-            nextRank = new BigInteger(current.getRank(), 36);
+            nextRank = prevRank.add(new BigInteger(Constants.FIRST_SHORTCUT_RANK, 36));
         } else {
             nextRank = new BigInteger(next.getRank(), 36);
-            prevRank = new BigInteger(current.getRank(), 36);
+            prevRank = nextRank.subtract(new BigInteger(Constants.FIRST_SHORTCUT_RANK, 36));
         }
         var mid = prevRank.add(nextRank).divide(BigInteger.TWO);
         return mid.toString(36);
@@ -160,6 +162,7 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
                     .name(config.getName())
                     .type(config.getType())
                     .url(config.getUrl())
+                    .rank(config.getRank())
                     .build();
         }
         return null;
@@ -175,6 +178,7 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
                     .name(config.getName())
                     .type(config.getType())
                     .url(config.getUrl())
+                    .rank(config.getRank())
                     .build();
         }
         return null;
