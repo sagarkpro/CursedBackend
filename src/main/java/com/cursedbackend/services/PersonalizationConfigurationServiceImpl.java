@@ -1,14 +1,18 @@
 package com.cursedbackend.services;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cursedbackend.constants.Constants;
 import com.cursedbackend.constants.DefaultPersonalization;
+import com.cursedbackend.domain.ValidateReorderShortcutRes;
 import com.cursedbackend.dtos.ResponseDto;
 import com.cursedbackend.dtos.personalization.PersonalizationConfigurationDto;
+import com.cursedbackend.dtos.personalization.ReorderShortcutDto;
 import com.cursedbackend.entities.PersonalizationConfiguration;
 import com.cursedbackend.respositories.PersonalizationConfigurationRepository;
 
@@ -31,7 +35,7 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
 
     @Override
     public ResponseDto<List<PersonalizationConfigurationDto>> getConfigurations(String email) {
-        var configs = configRepository.findByUserEmail(email);
+        var configs = configRepository.findByUserEmailOrderByRank(email);
         return ResponseDto.<List<PersonalizationConfigurationDto>>builder()
                 .success(true)
                 .data(configs.stream().map(this::toPersonalizationConfigurationDto).toList())
@@ -40,7 +44,15 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
 
     @Override
     public ResponseDto<Void> createShortcut(String email, PersonalizationConfigurationDto req) {
+        var exitingFirst = configRepository.findFirstByUserEmailOrderByRank(email).orElse(null);
+        String newRank;
+        if (exitingFirst != null) {
+            newRank = new BigInteger(exitingFirst.getRank(), 36).divide(BigInteger.TWO).toString(36);
+        } else {
+            newRank = Constants.FIRST_SHORTCUT_RANK;
+        }
         var config = toPersonalizationConfiguration(req, email);
+        config.setRank(newRank);
         configRepository.save(config);
         return ResponseDto.successDto();
     }
@@ -71,6 +83,73 @@ public class PersonalizationConfigurationServiceImpl implements PersonalizationC
             return ResponseDto.successDto();
         }
         return ResponseDto.errorDto("Invalid id, missing resource");
+    }
+
+    @Override
+    public ResponseDto<Void> reorderShortcut(String email, ReorderShortcutDto req) {
+        var validationRes = validateReorderReq(email, req);
+        if (!validationRes.isValid()) {
+            return ResponseDto.errorDto(validationRes.getError());
+        }
+
+        String newRank = calculateLexoRank(validationRes.getCurrent(), validationRes.getPrev(),
+                validationRes.getNext());
+        validationRes.getCurrent().setRank(newRank);
+        configRepository.save(validationRes.getCurrent());
+        return ResponseDto.successDto();
+    }
+
+    private ValidateReorderShortcutRes validateReorderReq(String email, ReorderShortcutDto req) {
+        if (req.getId() == null)
+            return ValidateReorderShortcutRes.invalid("Invalid request, id is required");
+        if (req.getNext() == null && req.getPrev() == null)
+            return ValidateReorderShortcutRes.invalid("Invalid request, either prev or next is required");
+
+        var current = configRepository.findByIdAndUserEmail(req.getId(), email).orElse(null);
+        if (current == null)
+            return ValidateReorderShortcutRes.invalid("Invalid id");
+
+        PersonalizationConfiguration next = null;
+        PersonalizationConfiguration prev = null;
+
+        if (req.getNext() != null) {
+            next = configRepository.findByIdAndUserEmail(req.getNext(), email).orElse(null);
+            if (next == null)
+                return ValidateReorderShortcutRes.invalid("Invalid nextId");
+        }
+
+        if (req.getPrev() != null) {
+            prev = configRepository.findByIdAndUserEmail(req.getPrev(), email).orElse(null);
+            if (prev == null)
+                return ValidateReorderShortcutRes.invalid("Invalid prevId");
+        }
+
+        return ValidateReorderShortcutRes.builder()
+                .valid(true)
+                .current(current)
+                .prev(prev)
+                .next(next)
+                .build();
+    }
+
+    private String calculateLexoRank(PersonalizationConfiguration current, PersonalizationConfiguration prev,
+            PersonalizationConfiguration next) {
+
+        BigInteger prevRank;
+        BigInteger nextRank;
+
+        if (prev != null && next != null) {
+            prevRank = new BigInteger(prev.getRank(), 36);
+            nextRank = new BigInteger(next.getRank(), 36);
+        } else if (prev != null) {
+            prevRank = new BigInteger(prev.getRank(), 36);
+            nextRank = new BigInteger(current.getRank(), 36);
+        } else {
+            nextRank = new BigInteger(next.getRank(), 36);
+            prevRank = new BigInteger(current.getRank(), 36);
+        }
+        var mid = prevRank.add(nextRank).divide(BigInteger.TWO);
+        return mid.toString(36);
     }
 
     private PersonalizationConfigurationDto toPersonalizationConfigurationDto(PersonalizationConfiguration config) {
